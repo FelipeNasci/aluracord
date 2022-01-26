@@ -26,5 +26,9 @@ jobs:
         with:
           node-version: 14.x
           architecture: x64
-      - run: yarn
-      - run: yarn lint
+          
+      - name: Dependency Install
+        run: yarn
+        
+      - name: Check linting
+        run: yarn lint
