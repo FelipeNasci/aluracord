@@ -32,7 +32,7 @@ function GlobalStyle() {
   );
 }
 
-function Titulo(props) {
+function Title(props) {
   const Tag = props.tag || "h1";
   return (
     <>
@@ -98,7 +98,7 @@ export default function PaginaInicial() {
               marginBottom: "32px",
             }}
           >
-            <Titulo tag="h2">Boas vindas de volta!</Titulo>
+            <Title tag="h2">Welcome to back!</Title>
             <Text
               variant="body3"
               styleSheet={{
@@ -151,6 +151,7 @@ export default function PaginaInicial() {
             }}
           >
             <Image
+              alt=""
               styleSheet={{
                 borderRadius: "50%",
                 marginBottom: "16px",
@@ -168,7 +169,7 @@ export default function PaginaInicial() {
             >
               {username}
             </Text>
-          </Box>  
+          </Box>
           {/* Photo Area */}
         </Box>
       </Box>
