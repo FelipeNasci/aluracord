@@ -3,9 +3,27 @@ import { Box, Text, TextField, Image, Button } from "@skynexui/components";
 import appConfig from "../../config.json";
 
 export default function ChatPage() {
-  // Sua lógica vai aqui
+  const [message, setMessage] = React.useState("");
+  const [messages, setMessages] = React.useState([]);
 
-  // ./Sua lógica vai aqui
+  function handleMessage(event) {
+    event.preventDefault();
+    setMessage(event.target.value);
+  }
+
+  function handleHandleMessages(event) {
+    if (event.key === "Enter" && !!event.target.value.length) {
+      event.preventDefault();
+      const message = {
+        id: messages.length,
+        text: event.target.value,
+        from: "felipenasci",
+      };
+      setMessages([message, ...messages]);
+      setMessage("");
+    }
+  }
+
   return (
     <Box
       styleSheet={{
@@ -47,10 +65,11 @@ export default function ChatPage() {
             padding: "16px",
           }}
         >
-          {/* <MessageList mensagens={[]} /> */}
+          <MessageList messages={messages} />
 
           <Box
             as="form"
+            onSubmit={(event) => event.preventDefault()}
             styleSheet={{
               display: "flex",
               alignItems: "center",
@@ -59,6 +78,9 @@ export default function ChatPage() {
             <TextField
               placeholder="Insira sua mensagem aqui..."
               type="textarea"
+              value={message}
+              onChange={handleMessage}
+              onKeyPress={handleHandleMessages}
               styleSheet={{
                 width: "100%",
                 border: "0",
@@ -102,7 +124,6 @@ function Header() {
 }
 
 function MessageList(props) {
-  console.log("MessageList", props);
   return (
     <Box
       tag="ul"
@@ -115,48 +136,50 @@ function MessageList(props) {
         marginBottom: "16px",
       }}
     >
-      <Text
-        key={mensagem.id}
-        tag="li"
-        styleSheet={{
-          borderRadius: "5px",
-          padding: "6px",
-          marginBottom: "12px",
-          hover: {
-            backgroundColor: appConfig.theme.colors.neutrals[700],
-          },
-        }}
-      >
-        <Box
+      {props.messages.map((message) => (
+        <Text
+          key={message.id}
+          tag="li"
           styleSheet={{
-            marginBottom: "8px",
+            borderRadius: "5px",
+            padding: "6px",
+            marginBottom: "12px",
+            hover: {
+              backgroundColor: appConfig.theme.colors.neutrals[700],
+            },
           }}
         >
-          <Image
-            alt="image"
+          <Box
             styleSheet={{
-              width: "20px",
-              height: "20px",
-              borderRadius: "50%",
-              display: "inline-block",
-              marginRight: "8px",
+              marginBottom: "8px",
             }}
-            src={`https://github.com/vanessametonini.png`}
-          />
-          <Text tag="strong">{mensagem.de}</Text>
-          <Text
-            styleSheet={{
-              fontSize: "10px",
-              marginLeft: "8px",
-              color: appConfig.theme.colors.neutrals[300],
-            }}
-            tag="span"
           >
-            {new Date().toLocaleDateString()}
-          </Text>
-        </Box>
-        {mensagem.texto}
-      </Text>
+            <Image
+              alt="image"
+              styleSheet={{
+                width: "20px",
+                height: "20px",
+                borderRadius: "50%",
+                display: "inline-block",
+                marginRight: "8px",
+              }}
+              src={`https://github.com/${message.from}.png`}
+            />
+            <Text tag="strong">{message.from}</Text>
+            <Text
+              styleSheet={{
+                fontSize: "10px",
+                marginLeft: "8px",
+                color: appConfig.theme.colors.neutrals[300],
+              }}
+              tag="span"
+            >
+              {new Date().toLocaleDateString()}
+            </Text>
+          </Box>
+          {message.text}
+        </Text>
+      ))}
     </Box>
   );
 }
