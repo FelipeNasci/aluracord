@@ -1,36 +1,7 @@
+import * as React from "react";
+import { useRouter } from "next/router";
 import { Box, Button, Text, TextField, Image } from "@skynexui/components";
-import appConfig from "../config.json";
-
-function GlobalStyle() {
-  return (
-    <style global jsx>{`
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        list-style: none;
-      }
-      body {
-        font-family: "Open Sans", sans-serif;
-      }
-      /* App fit Height */
-      html,
-      body,
-      #__next {
-        min-height: 100vh;
-        display: flex;
-        flex: 1;
-      }
-      #__next {
-        flex: 1;
-      }
-      #__next > * {
-        flex: 1;
-      }
-      /* ./App fit Height */
-    `}</style>
-  );
-}
+import appConfig from "../../config.json";
 
 function Title(props) {
   const Tag = props.tag || "h1";
@@ -49,11 +20,13 @@ function Title(props) {
 }
 
 export default function PaginaInicial() {
-  const username = "peas";
+  // const username = "felipenasci";
+
+  const [username, setUsername] = React.useState("");
+  const router = useRouter();
 
   return (
     <>
-      <GlobalStyle />
       <Box
         styleSheet={{
           display: "flex",
@@ -88,6 +61,7 @@ export default function PaginaInicial() {
           {/* Formulário */}
           <Box
             as="form"
+            onSubmit={(event) => event.preventDefault()}
             styleSheet={{
               display: "flex",
               flexDirection: "column",
@@ -111,6 +85,11 @@ export default function PaginaInicial() {
 
             <TextField
               fullWidth
+              value={username}
+              onChange={(event) => {
+                event.preventDefault();
+                setUsername(event.target.value);
+              }}
               textFieldColors={{
                 neutral: {
                   textColor: appConfig.theme.colors.neutrals[200],
@@ -124,6 +103,7 @@ export default function PaginaInicial() {
               type="submit"
               label="Entrar"
               fullWidth
+              onClick={() => router.push("./chat")}
               buttonColors={{
                 contrastColor: appConfig.theme.colors.neutrals["000"],
                 mainColor: appConfig.theme.colors.primary[500],
